@@ -5,6 +5,9 @@
  * @example
  * // returns { k1: { k2: 'wolf' }}
  * set({ k1: { k2: 'lion' }}, '.k1.k2', 'wolf')
+ * @example
+ * // returns { wolf: [1, 2, 3] }
+ * set({ wolf: [1, 2, 4] }, '.wolf.2', 3)
  * @param {Object} obj object to be changed
  * @param {string} path path to value in format '.key1.key2.key3'
  * @param {*} value value to set in the specified path
