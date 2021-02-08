@@ -95,4 +95,54 @@ QUnit.module('Тестируем функцию set', function () {
 
 		assert.deepEqual(set({}, '.deep.nested.field', null), object);
 	});
+
+	QUnit.test('set правильно создаёт необходимые свойства', function (assert) {
+		const object = {
+			deep: {
+				nested: {
+					field: 'wolf'
+				}
+			}
+		}
+		const correct_obj = {
+			deep: {
+				nested1: {
+					wolf: 'lion',
+				},
+				nested: {
+					field: 'wolf'
+				}
+			}
+		}
+
+		assert.deepEqual(set(object, '.deep.nested1.wolf', 'lion'), correct_obj);
+	});
+
+	QUnit.test('set создаёт правильное исключение при неверных аргументах', function (assert) {
+		const object = {
+			deep: {
+				nested: {
+					field: 'wolf'
+				}
+			}
+		}
+
+		assert.raises(
+			function () {
+				set('wolf', '.0', 'r');
+			},
+			function (err) {
+				return err.message === 'not an object';
+			}
+		);
+
+		assert.raises(
+			function () {
+				set(object, 'deep.nested.field', 'lion');
+			},
+			function (err) {
+				return err.message === 'incorrect path';
+			}
+		);
+	});
 });
