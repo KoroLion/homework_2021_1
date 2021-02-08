@@ -118,6 +118,12 @@ QUnit.module('Тестируем функцию set', function () {
 		assert.deepEqual(set(object, '.deep.nested1.wolf', 'lion'), correct_obj);
 	});
 
+	QUnit.test('set работает с Date', function (assert) {
+		let date = set(new Date(), '.k1.k2', 'wolf');
+		assert.equal(date.k1.k2, 'wolf');
+		assert.equal(date instanceof Date, true);
+	});
+
 	QUnit.test('set создаёт правильное исключение при неверных аргументах', function (assert) {
 		const object = {
 			deep: {
@@ -127,7 +133,7 @@ QUnit.module('Тестируем функцию set', function () {
 			}
 		}
 
-		assert.raises(
+		assert.throws(
 			function () {
 				set('wolf', '.0', 'r');
 			},
@@ -135,10 +141,58 @@ QUnit.module('Тестируем функцию set', function () {
 				return err.message === 'not an object';
 			}
 		);
+		assert.throws(
+			function () {
+				set(null, '.0', 'r');
+			},
+			function (err) {
+				return err.message === 'not an object';
+			}
+		);
+		assert.throws(
+			function () {
+				set(5, '.0', 'r');
+			},
+			function (err) {
+				return err.message === 'not an object';
+			}
+		);
 
-		assert.raises(
+		assert.throws(
 			function () {
 				set(object, 'deep.nested.field', 'lion');
+			},
+			function (err) {
+				return err.message === 'incorrect path';
+			}
+		);
+		assert.throws(
+			function () {
+				set(object, null, 'lion');
+			},
+			function (err) {
+				return err.message === 'incorrect path';
+			}
+		);
+		assert.throws(
+			function () {
+				set(object, '', 'lion');
+			},
+			function (err) {
+				return err.message === 'incorrect path';
+			}
+		);
+		assert.throws(
+			function () {
+				set(object, 5, 'lion');
+			},
+			function (err) {
+				return err.message === 'incorrect path';
+			}
+		);
+		assert.throws(
+			function () {
+				set(object, new Date(), 'lion');
 			},
 			function (err) {
 				return err.message === 'incorrect path';
