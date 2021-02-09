@@ -30,7 +30,7 @@ const set = (obj, path, value) => {
         throw new TypeError('path is not a string');
     }
     if (path[0] !== '.') {
-        throw new Error('incorrect path')
+        throw new Error('incorrect path');
     }
 
     // all keys as an array of string
