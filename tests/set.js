@@ -134,69 +134,37 @@ QUnit.module('Тестируем функцию set', function () {
 		}
 
 		assert.throws(
-			function () {
-				set('wolf', '.0', 'r');
-			},
-			function (err) {
-				return err.message === 'not an object';
-			}
+			() => { set('wolf', '.0', 'r'); },
+			TypeError('obj is not an object')
 		);
 		assert.throws(
-			function () {
-				set(null, '.0', 'r');
-			},
-			function (err) {
-				return err.message === 'not an object';
-			}
+			() => { set(null, '.0', 'r'); },
+			TypeError('obj is not an object')
 		);
 		assert.throws(
-			function () {
-				set(5, '.0', 'r');
-			},
-			function (err) {
-				return err.message === 'not an object';
-			}
+			() => { set(5, '.0', 'r'); },
+			TypeError('obj is not an object')
 		);
 
 		assert.throws(
-			function () {
-				set(object, 'deep.nested.field', 'lion');
-			},
-			function (err) {
-				return err.message === 'incorrect path';
-			}
+			() => { set(object, 'deep.nested.field', 'lion'); },
+			Error('incorrect path')
 		);
 		assert.throws(
-			function () {
-				set(object, null, 'lion');
-			},
-			function (err) {
-				return err.message === 'incorrect path';
-			}
+			() => { set(object, null, 'lion'); },
+			TypeError('path is not a string')
 		);
 		assert.throws(
-			function () {
-				set(object, '', 'lion');
-			},
-			function (err) {
-				return err.message === 'incorrect path';
-			}
+			() => { set(object, '', 'lion'); },
+			TypeError('path is not a string')
 		);
 		assert.throws(
-			function () {
-				set(object, 5, 'lion');
-			},
-			function (err) {
-				return err.message === 'incorrect path';
-			}
+			() => { set(object, 5, 'lion'); },
+			TypeError('path is not a string')
 		);
 		assert.throws(
-			function () {
-				set(object, new Date(), 'lion');
-			},
-			function (err) {
-				return err.message === 'incorrect path';
-			}
+			() => { set(object, new Date(), 'lion'); },
+			TypeError('path is not a string')
 		);
 	});
 });
