@@ -32,8 +32,8 @@ const set = (obj, path, value) => {
 
     // changing/creating value by specified path
     let prev_obj = obj;
-    keys.forEach((key, i, a) => {
-        if (i == (a.length - 1)) {
+    keys.forEach((key, i, keys) => {
+        if (i == (keys.length - 1)) {
             prev_obj[key] = value;
         } else {
             if (!prev_obj.hasOwnProperty(key)) {
