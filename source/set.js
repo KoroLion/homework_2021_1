@@ -8,23 +8,16 @@
  * @example
  * // returns { wolf: [1, 2, 3] }
  * set({ wolf: [1, 2, 4] }, '.wolf.2', 3)
- * @param {Object|Array} obj object or array to be changed
+ * @param {Object} obj object to be changed
  * @param {String} path path to value in format '.key1.key2.key3'
  * @param {*} value value to set in the specified path
  * @returns {Object} changed object
  */
 const set = (obj, path, value) => {
-    const isObjOrArray = (obj) => {
-        if (obj) {
-            const obj_prot = Object.getPrototypeOf(obj);
-            return obj_prot === Object.prototype || obj_prot === Array.prototype;
-        } else {
-            return false;
-        }
-    }
+    const isObject = (obj) => obj && (Object.getPrototypeOf(obj) === Object.prototype)
 
-    if (!isObjOrArray(obj)) {
-        throw new TypeError('obj is not an object or array');
+    if (!isObject(obj)) {
+        throw new TypeError('obj is not an object');
     }
     if (!path || typeof(path) !== 'string') {
         throw new TypeError('path is not a string');
