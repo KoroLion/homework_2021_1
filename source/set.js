@@ -8,14 +8,23 @@
  * @example
  * // returns { wolf: [1, 2, 3] }
  * set({ wolf: [1, 2, 4] }, '.wolf.2', 3)
- * @param {Object} obj object to be changed
+ * @param {Object|Array} obj object or array to be changed
  * @param {String} path path to value in format '.key1.key2.key3'
  * @param {*} value value to set in the specified path
  * @returns {Object} changed object
  */
 const set = (obj, path, value) => {
-    if (!obj || typeof(obj) !== 'object') {
-        throw new TypeError('obj is not an object');
+    const isObjOrArray = (obj) => {
+        if (obj) {
+            const obj_prot = Object.getPrototypeOf(obj);
+            return obj_prot === Object.prototype || obj_prot === Array.prototype;
+        } else {
+            return false;
+        }
+    }
+
+    if (!isObjOrArray(obj)) {
+        throw new TypeError('obj is not an object or array');
     }
     if (!path || typeof(path) !== 'string') {
         throw new TypeError('path is not a string');
@@ -28,16 +37,18 @@ const set = (obj, path, value) => {
     let keys = path.split('.');
     keys.shift();
 
-    // last key
-    const last_key = keys.pop();
-
     // changing/creating value by specified path
-    keys.reduce((prev_obj, key) => {
-        if (!prev_obj.hasOwnProperty(key)) {
-            prev_obj[key] = {};
+    let prev_obj = obj;
+    keys.forEach((key, i, a) => {
+        if (i == (a.length - 1)) {
+            prev_obj[key] = value;
+        } else {
+            if (!prev_obj.hasOwnProperty(key)) {
+                prev_obj[key] = {};
+            }
+            prev_obj = prev_obj[key];
         }
-        return prev_obj[key];
-    }, obj)[last_key] = value;
+    }, obj);
 
     return obj;
 }

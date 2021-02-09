@@ -82,6 +82,7 @@ QUnit.module('Тестируем функцию set', function () {
 
 		assert.deepEqual(set(object1, '.foo.0', 42), new1);
 		assert.deepEqual(set(object2, '.bar.0.foobar', 'baz'), new2);
+		assert.deepEqual(set([1, 2, 4], '.2', 3), [1, 2, 3]);
 	});
 
 	QUnit.test('set работает правильно c объектами без свойств', function (assert) {
@@ -118,12 +119,6 @@ QUnit.module('Тестируем функцию set', function () {
 		assert.deepEqual(set(object, '.deep.nested1.wolf', 'lion'), correct_obj);
 	});
 
-	QUnit.test('set работает с Date', function (assert) {
-		let date = set(new Date(), '.k1.k2', 'wolf');
-		assert.equal(date.k1.k2, 'wolf');
-		assert.equal(date instanceof Date, true);
-	});
-
 	QUnit.test('set создаёт правильное исключение при неверных аргументах', function (assert) {
 		const object = {
 			deep: {
@@ -135,15 +130,27 @@ QUnit.module('Тестируем функцию set', function () {
 
 		assert.throws(
 			() => { set('wolf', '.0', 'r'); },
-			TypeError('obj is not an object')
+			TypeError('obj is not an object or array')
 		);
 		assert.throws(
 			() => { set(null, '.0', 'r'); },
-			TypeError('obj is not an object')
+			TypeError('obj is not an object or array')
 		);
 		assert.throws(
 			() => { set(5, '.0', 'r'); },
-			TypeError('obj is not an object')
+			TypeError('obj is not an object or array')
+		);
+		assert.throws(
+			() => { set(new Date(), '.0', 'r'); },
+			TypeError('obj is not an object or array')
+		);
+		assert.throws(
+			() => { set(new Set(), '.0', 'r'); },
+			TypeError('obj is not an object or array')
+		);
+		assert.throws(
+			() => { set(new Map(), '.0', 'r'); },
+			TypeError('obj is not an object or array')
 		);
 
 		assert.throws(
