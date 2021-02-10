@@ -27,13 +27,13 @@ const set = (obj, path, value) => {
     }
 
     // all keys as an array of string
-    let keys = path.split('.');
+    const keys = path.split('.');
     keys.shift();
 
     // changing/creating value by specified path
     let prev_obj = obj;
     keys.forEach((key, i, keys) => {
-        if (i == (keys.length - 1)) {
+        if (i === keys.length - 1) {
             prev_obj[key] = value;
         } else {
             if (!prev_obj.hasOwnProperty(key)) {
@@ -41,7 +41,7 @@ const set = (obj, path, value) => {
             }
             prev_obj = prev_obj[key];
         }
-    }, obj);
+    });
 
     return obj;
 }
